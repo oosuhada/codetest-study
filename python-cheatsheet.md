@@ -554,6 +554,122 @@ a, *rest = [1, 2, 3, 4]   # a=1, rest=[2,3,4]
 
 ---
 
+# 🔥 21. 난수 (random)
+
+```python
+import random
+
+random.random()              # 0.0 이상 1.0 미만 float 난수
+random.randint(1, 10)        # 1 이상 10 이하 int 난수 (양 끝 포함!)
+random.randrange(0, 10)      # 0 이상 10 미만 int 난수 (range처럼)
+random.choice([1, 2, 3])     # 리스트에서 랜덤 요소 1개 선택
+random.choices([1,2,3], k=2) # 중복 허용, k개 선택
+random.sample([1,2,3,4], 2)  # 중복 없이 k개 선택
+random.shuffle(arr)          # 리스트 제자리에서 섞기 (반환값 없음!)
+```
+
+## ❗ 자주 틀리는 것
+
+```python
+arr = random.shuffle(arr)   # ❌ None 반환됨!
+random.shuffle(arr)         # ✅ 원본을 직접 수정
+
+random.randint(1, 10)       # ✅ 10 포함
+random.randrange(1, 10)     # ⚠️ 10 미포함 (range와 동일)
+```
+
+---
+
+# 🔥 22. 날짜와 시간 (datetime)
+
+```python
+from datetime import datetime, date, timedelta
+
+# 현재 날짜/시간
+now = datetime.now()         # 날짜 + 시간
+today = date.today()         # 날짜만
+
+# 값 가져오기
+now.year
+now.month                    # 1 ~ 12 (1월 = 1)
+now.day
+now.hour
+now.minute
+now.second
+now.weekday()                # 월=0 ~ 일=6
+now.isoweekday()             # 월=1 ~ 일=7
+
+# 특정 날짜 생성
+d = date(2024, 1, 1)
+dt = datetime(2024, 1, 1, 9, 30, 0)
+
+# 날짜 연산 (timedelta)
+from datetime import timedelta
+d + timedelta(days=7)        # 7일 후
+d - timedelta(weeks=1)       # 1주 전
+dt + timedelta(hours=3)      # 3시간 후
+
+# 날짜 차이
+diff = d2 - d1               # timedelta 객체
+diff.days                    # 일수 차이 (정수)
+diff.total_seconds()         # 초 단위 차이
+
+# 비교
+d1 < d2
+d1 == d2
+
+# 포맷
+now.strftime("%Y-%m-%d %H:%M:%S")     # datetime → 문자열
+datetime.strptime("2024-01-01", "%Y-%m-%d")  # 문자열 → datetime
+```
+
+## 🔥 자주 쓰는 포맷 코드
+
+```plaintext
+%Y  연도 (2024)
+%m  월 (01~12)
+%d  일 (01~31)
+%H  시 (00~23)
+%M  분 (00~59)
+%S  초 (00~59)
+%A  요일 영문 (Monday...)
+%j  연중 몇 번째 날 (001~366)
+```
+
+## ❗ 자주 틀리는 것
+
+```python
+diff = d2 - d1
+diff               # timedelta(days=364)
+diff.days          # ✅ 364  ← 이걸 써야 숫자로 쓸 수 있음
+int(diff)          # ❌ 에러!
+
+# weekday vs isoweekday
+now.weekday()      # 월=0, 일=6
+now.isoweekday()   # 월=1, 일=7  ← 헷갈리면 이거 써라
+```
+
+---
+
+# 🚀 핵심 무기 요약
+
+| 상황 | 사용 |
+|---|---|
+| 문자열 합치기 | `join` |
+| 두 리스트 동시 | `zip` |
+| 인덱스 필요 | `enumerate` |
+| 정렬 | `sort` / `sorted` |
+| 카운트 | `Counter` |
+| 중복 제거 | `set` |
+| BFS | `deque` |
+| 최솟값/최댓값 빠르게 | `heapq` |
+| 완전탐색 | 순열/조합 `itertools` |
+| 이진탐색 | `bisect` |
+| 난수 | `random.randint` / `random.choice` |
+| 날짜/시간 | `datetime` / `timedelta` |
+
+---
+
 # 🔥 최종 한 줄
 
 👉 "문법은 외우는 게 아니라 반복해서 자동화한다 — 패턴이 보이면 코드가 나온다"
