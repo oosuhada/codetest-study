@@ -36,3 +36,7 @@ For interview preparation, the useful signal is often not only the final accepte
 이 저장소는 완성형 제품이 아니라 학습 로그입니다. 제품 개발 역량은 프로필의 대표 프로젝트에서 보여주고, 이곳은 Python/algorithm fundamentals를 꾸준히 반복한 기록으로 유지합니다.
 
 This is intentionally a study archive rather than a polished product repository. Product engineering work is shown in the featured repositories on my profile; this repo documents the underlying algorithm and language practice.
+
+## Topics
+
+[`algorithms`](https://github.com/topics/algorithms) · [`baekjoonhub`](https://github.com/topics/baekjoonhub) · [`coding-test`](https://github.com/topics/coding-test) · [`problem-solving`](https://github.com/topics/problem-solving) · [`programmers`](https://github.com/topics/programmers) · [`python`](https://github.com/topics/python) · [`study-log`](https://github.com/topics/study-log)
