@@ -37,6 +37,13 @@ For interview preparation, the useful signal is often not only the final accepte
 
 This is intentionally a study archive rather than a polished product repository. Product engineering work is shown in the featured repositories on my profile; this repo documents the underlying algorithm and language practice.
 
-## Topics
+## Architecture & Topics / 아키텍처 및 주제
 
-[`algorithms`](https://github.com/topics/algorithms) · [`baekjoonhub`](https://github.com/topics/baekjoonhub) · [`coding-test`](https://github.com/topics/coding-test) · [`problem-solving`](https://github.com/topics/problem-solving) · [`programmers`](https://github.com/topics/programmers) · [`python`](https://github.com/topics/python) · [`study-log`](https://github.com/topics/study-log) · [`data-structures`](https://github.com/topics/data-structures) · [`competitive-programming`](https://github.com/topics/competitive-programming) · [`algorithm-practice`](https://github.com/topics/algorithm-practice) · [`learning`](https://github.com/topics/learning) · [`coding-interview`](https://github.com/topics/coding-interview) · [`study`](https://github.com/topics/study) · [`coding-challenge`](https://github.com/topics/coding-challenge) · [`computer-science`](https://github.com/topics/computer-science)
+**Architecture / 아키텍처**<br>
+[`append-only-history`](https://github.com/topics/append-only-history) · [`automated-ingestion`](https://github.com/topics/automated-ingestion) · [`repository-as-database`](https://github.com/topics/repository-as-database) · [`event-driven-automation`](https://github.com/topics/event-driven-automation)
+
+**Project context / 프로젝트 맥락**<br>
+[`algorithm-practice`](https://github.com/topics/algorithm-practice) · [`algorithms`](https://github.com/topics/algorithms) · [`coding-challenge`](https://github.com/topics/coding-challenge) · [`coding-interview`](https://github.com/topics/coding-interview) · [`coding-test`](https://github.com/topics/coding-test) · [`competitive-programming`](https://github.com/topics/competitive-programming) · [`computer-science`](https://github.com/topics/computer-science) · [`data-structures`](https://github.com/topics/data-structures) · [`learning`](https://github.com/topics/learning) · [`problem-solving`](https://github.com/topics/problem-solving) · [`programmers`](https://github.com/topics/programmers) · [`study`](https://github.com/topics/study) · [`study-log`](https://github.com/topics/study-log)
+
+**Implementation stack / 구현 스택**<br>
+[`baekjoonhub`](https://github.com/topics/baekjoonhub) · [`python`](https://github.com/topics/python)
