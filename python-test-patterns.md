@@ -8,6 +8,7 @@
 |---|---|
 | 입출력 기본 | 0-1 ~ 0-5 |
 | 문자열 처리 | 1 ~ 6 |
+| **기초 실수 방지** | **6-A ~ 6-D** |
 | 수학 / 조건 | 7 ~ 10 |
 | 리스트 / 정렬 | 11 ~ 15 |
 | 딕셔너리 / 집합 | 16 ~ 18 |
@@ -417,6 +418,166 @@ def solution(numbers):
 ### 💡 핵심
 - 두 숫자를 이어붙여 크기 비교
 - `cmp_to_key` 로 사용자 정의 정렬
+
+---
+
+# 🔥 기초 실수 방지 패턴 (코테 전 반드시 확인)
+
+---
+
+## 🔥 6-A. 인덱스 순회 vs 값 순회 선택 패턴
+
+### 🧩 문제 유형
+반복문 안에서 "위치(인덱스)"가 조건에 영향을 미치는 문제
+
+### ✅ 패턴
+
+```python
+# 🧩 예시: 문자열에서 "1"이 나오면 mode 전환, 짝수/홀수 인덱스에 따라 결과에 추가
+
+def solution(code):
+    result = ''
+    mode = 0
+
+    # ✅ 인덱스가 조건에 쓰이므로 → 인덱스 순회 필수
+    for idx in range(len(code)):
+
+        if code[idx] == "1":      # ← 문자열 비교는 반드시 "1" (따옴표!)
+            mode = 1 - mode
+            continue
+
+        if mode == 0:
+            if idx % 2 == 0:      # ← 인덱스를 조건에 씀 → 값 순회로는 불가
+                result += code[idx]
+        else:
+            if idx % 2 == 1:
+                result += code[idx]
+
+    return result if result else "EMPTY"
+```
+
+### 💡 선택 기준
+
+| 상황 | 순회 방식 |
+|---|---|
+| 원소 값 자체만 쓸 때 | `for x in arr` |
+| 위치(인덱스)가 조건에 필요할 때 | `for i in range(len(arr))` |
+| 인덱스 + 값 둘 다 필요할 때 | `for i, v in enumerate(arr)` |
+
+### ❌ 흔한 실수
+
+```python
+# 인덱스 조건이 필요한데 값 순회를 쓴 경우
+for c in code:          # c = 'a', 'b', '1' ...
+    if c % 2 == 0:      # ❌ 문자에 % 연산 불가 → TypeError
+        result += c
+```
+
+---
+
+## 🔥 6-B. 변수 vs 리스트 접근 패턴
+
+### 🧩 문제 유형
+리스트 원소에 접근하거나, 문자열 누적할 때
+
+### ✅ 패턴
+
+```python
+def solution(a, d, included):
+    answer = 0
+
+    for i in range(len(included)):
+
+        # ✅ 리스트 접근은 []
+        if included[i]:               # True/False 변수 → 그 자체가 조건
+            answer += (a + (i * d))   # i번째 항 = a + i*d
+
+    return answer
+```
+
+### ❌ 흔한 실수
+
+```python
+# 리스트를 함수처럼 호출
+if included(i):         # ❌ TypeError: 'list' object is not callable
+if included[i] == True: # ⚠️ 작동은 하지만 불필요 → included[i] 로 충분
+
+# 문자열 누적 변수를 함수처럼 호출
+result = ""
+result(i)               # ❌ TypeError: 'str' object is not callable
+result += str(i)        # ✅
+```
+
+---
+
+## 🔥 6-C. 조건 분기 완전 구분 패턴
+
+### 🧩 문제 유형
+3가지 이상의 경우로 나눌 때 (전부 같음 / 두 개만 같음 / 다 다름)
+
+### ✅ 패턴
+
+```python
+def solution(a, b, c):
+
+    # 🔥 Python 연속 비교: a == b == c
+    if a == b == c:
+        answer = (a + b + c) * (a**2 + b**2 + c**2) * (a**3 + b**3 + c**3)
+
+    # 두 개만 같은 경우 → or로 3가지 경우 묶기
+    elif a == b or b == c or a == c:
+        answer = (a + b + c) * (a**2 + b**2 + c**2)
+
+    # 나머지 → else (조건 안 써도 됨)
+    else:
+        answer = a + b + c
+
+    return answer
+```
+
+### ❌ 흔한 실수
+
+```python
+elif answer = a + b + c:    # ❌ SyntaxError! elif는 조건식이 와야 함
+elif a + b + c:             # ❌ 합이 0이면 False → 논리 오류
+else answer = a + b + c     # ❌ else 뒤에 조건 없음, : 필요, 다음 줄에 들여쓰기로
+```
+
+---
+
+## 🔥 6-D. 누적 초기값 실수 방지 패턴
+
+### 🧩 문제 유형
+합, 곱, 최솟값 등을 누적할 때 초기값 설정
+
+### ✅ 패턴
+
+```python
+def solution(num_list):
+
+    sum_num = 0     # ✅ 합의 초기값 → 0
+    product = 1     # ✅ 곱의 초기값 → 반드시 1 (0이면 영원히 0!)
+    min_val = float('inf')    # ✅ 최솟값 초기값 → 무한대
+
+    for i in num_list:
+        sum_num += i
+        product *= i
+        min_val = min(min_val, i)
+
+    # 조건 비교 후 정수로 반환
+    if product < sum_num ** 2:
+        return 1    # ✅ 정수 (문자열 "1" 아님!)
+    else:
+        return 0    # ✅ 정수
+```
+
+### ❌ 흔한 실수
+
+```python
+product = 0         # ❌ 0 * 어떤수 = 0 → 영원히 0
+return "1"          # ❌ 문자열 반환 → 정수를 요구하면 오답
+return "0"          # ❌
+```
 
 ---
 
@@ -1253,6 +1414,18 @@ def solution(year, month, day, n):
 문자열 합치기        → join
 두 개 동시 반복      → zip
 인덱스 필요          → enumerate
+───────────────────────────────────────────────────
+값 순회 (원소만 씀)   → for x in arr
+인덱스 순회 (위치 조건) → for i in range(len(arr))
+인덱스 + 값 둘 다    → for i, v in enumerate(arr)
+리스트 접근           → arr[i] (괄호 ❌, 대괄호 ✅)
+문자열 누적           → result += str(i)
+곱 누적 초기값        → product = 1 (0 ❌)
+리스트 접근 실수      → included[i] ✅  /  included(i) ❌
+True/False 비교      → if flag ✅  /  if flag == True ❌
+문자 vs 숫자         → s[i] == "1" ✅  /  s[i] == 1 ❌
+반환 타입            → return 1 ✅  /  return "1" ❌
+───────────────────────────────────────────────────
 정렬                → sort / sorted + key
 카운트              → Counter
 중복 제거            → set
