@@ -228,3 +228,46 @@ result = first_count * first + second_count * second
 
 print(result)
 
+
+# -------------------------------------------------------------- #
+
+import time  # 시간 측정 모듈
+
+# 입력
+n, m, k = map(int, input().split())
+numbers = list(map(int, input().split()))
+
+start_time = time.perf_counter()  # ⭐ 여기서 시작 (입력 이후)
+
+# 정렬
+numbers.sort()
+
+# 가장 큰 수, 두 번째 큰 수
+first = numbers[-1]
+second = numbers[-2]
+
+# 반복 패턴 계산
+pattern = k + 1
+count = m // pattern
+remainder = m % pattern
+
+# 등장 횟수 계산
+first_count = count * k + remainder
+second_count = count
+
+# 결과 계산
+result = first_count * first + second_count * second
+
+end_time = time.perf_counter()  # 종료
+
+# 결과 출력
+print(result)
+
+# 실행 시간 출력
+print(f"Execution Time: {end_time - start_time:.6f} seconds")
+
+
+# 최대값은 sort 로 구하는게 가장 빠르다.
+# greedy할때는 sort를 이용해서 가장 큰 수, 두 번째로 큰 수를 구하는게 좋다.
+# 질문, 가장 큰 수가 2번 이상 반복되면? -2 번째 자리로 찾는게 유효한가?
+# num1, num2에서 num2 가 문제 
