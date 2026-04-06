@@ -15,6 +15,7 @@
 | 이진탐색 | 26 ~ 27 |
 | 순열 / 조합 | 28 ~ 29 |
 | 재귀 | 30 |
+| 날짜와 시간 | 31 ~ 35 |
 
 ---
 
@@ -800,6 +801,206 @@ def fib(n):
 
 ---
 
+# 🔥 날짜와 시간
+
+---
+
+## 🔥 31. 두 날짜 사이 일수 계산 (D-day)
+
+### 🧩 문제 유형
+두 날짜가 주어졌을 때 며칠 차이인지 구하라
+
+### ✅ 패턴 — datetime 라이브러리
+
+```python
+from datetime import date
+
+def solution(year1, month1, day1, year2, month2, day2):
+    d1 = date(year1, month1, day1)
+    d2 = date(year2, month2, day2)
+    return (d2 - d1).days    # timedelta.days로 정수 추출
+```
+
+### ✅ 패턴 — 기본 구현 (라이브러리 없이)
+
+```python
+def solution(year1, month1, day1, year2, month2, day2):
+    days_in_month = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+    def is_leap(y):
+        return (y % 4 == 0 and y % 100 != 0) or (y % 400 == 0)
+
+    def to_days(y, m, d):
+        total = 0
+        for year in range(1, y):
+            total += 366 if is_leap(year) else 365
+        for month in range(1, m):
+            total += days_in_month[month]
+            if month == 2 and is_leap(y):
+                total += 1
+        total += d
+        return total
+
+    return to_days(year2, month2, day2) - to_days(year1, month1, day1)
+```
+
+### 💡 핵심
+- `(d2 - d1).days` → 반드시 `.days`로 정수 추출 (그냥 `d2 - d1`은 timedelta 객체)
+- 기본 구현 시 윤년 처리 필수
+
+---
+
+## 🔥 32. 요일 구하기
+
+### 🧩 문제 유형
+특정 날짜가 무슨 요일인지 구하라
+
+### ✅ 패턴 — datetime 라이브러리
+
+```python
+from datetime import date
+
+def solution(year, month, day):
+    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    d = date(year, month, day)
+    return days[d.weekday()]   # weekday(): 월=0 ~ 일=6
+```
+
+### ✅ 패턴 — 기본 구현 (젤러의 공식)
+
+```python
+def solution(year, month, day):
+    # 젤러의 공식: 1월, 2월은 전년도 13, 14월로 처리
+    if month <= 2:
+        month += 12
+        year -= 1
+    k = year % 100
+    j = year // 100
+    h = (day + (13 * (month + 1)) // 5 + k + k // 4 + j // 4 - 2 * j) % 7
+    # h: 0=토, 1=일, 2=월, 3=화, 4=수, 5=목, 6=금
+    days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    return days[h]
+```
+
+### 💡 핵심
+- `weekday()` → 월=0, 일=6
+- `isoweekday()` → 월=1, 일=7 (헷갈리면 이쪽이 더 직관적)
+- 기본 구현은 젤러의 공식 — 외우기 어려우면 datetime 써라
+
+---
+
+## 🔥 33. 윤년 판별
+
+### 🧩 문제 유형
+주어진 연도가 윤년인지 판별하라
+
+### ✅ 패턴 — 직접 구현 (조건 정확히 외우기)
+
+```python
+def is_leap(year):
+    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
+```
+
+### ✅ 패턴 — datetime 라이브러리
+
+```python
+import calendar
+
+def is_leap(year):
+    return calendar.isleap(year)
+```
+
+### 💡 핵심 — 윤년 조건 (순서대로 체크)
+```plaintext
+1. 4로 나눠지면 → 윤년 후보
+2. 근데 100으로도 나눠지면 → 윤년 아님
+3. 근데 400으로도 나눠지면 → 다시 윤년
+예) 2000 → 윤년 / 1900 → 윤년 아님 / 2024 → 윤년
+```
+
+---
+
+## 🔥 34. 날짜 유효성 검사
+
+### 🧩 문제 유형
+입력된 날짜가 실제로 존재하는 날짜인지 판별하라
+
+### ✅ 패턴 — datetime 라이브러리 (try-except 활용)
+
+```python
+from datetime import date
+
+def is_valid_date(year, month, day):
+    try:
+        date(year, month, day)
+        return True
+    except ValueError:
+        return False
+```
+
+### ✅ 패턴 — 기본 구현
+
+```python
+def is_valid_date(year, month, day):
+    if month < 1 or month > 12:
+        return False
+    days_in_month = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+        days_in_month[2] = 29
+    return 1 <= day <= days_in_month[month]
+```
+
+### 💡 핵심
+- `try-except ValueError` 패턴 → 가장 간결하고 실수 없음
+- 기본 구현 시 윤년 → 2월 29일 처리 잊지 말기
+
+---
+
+## 🔥 35. n일 후 날짜 계산
+
+### 🧩 문제 유형
+특정 날짜에서 n일 후(또는 전)의 날짜를 구하라
+
+### ✅ 패턴 — datetime 라이브러리
+
+```python
+from datetime import date, timedelta
+
+def solution(year, month, day, n):
+    d = date(year, month, day)
+    result = d + timedelta(days=n)    # n일 후
+    return result.year, result.month, result.day
+```
+
+### ✅ 패턴 — 기본 구현
+
+```python
+def solution(year, month, day, n):
+    days_in_month = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+    def is_leap(y):
+        return (y % 4 == 0 and y % 100 != 0) or (y % 400 == 0)
+
+    for _ in range(n):
+        days_in_month[2] = 29 if is_leap(year) else 28
+        day += 1
+        if day > days_in_month[month]:
+            day = 1
+            month += 1
+            if month > 12:
+                month = 1
+                year += 1
+
+    return year, month, day
+```
+
+### 💡 핵심
+- `timedelta(days=n)` → 음수면 n일 전
+- 기본 구현 시 월 넘김 → 연도 넘김 순서로 처리
+- n이 크면 기본 구현은 느림 → datetime 써라
+
+---
+
 # 🚀 최종 핵심 — 문제 보면 바로 떠올려라
 
 ```plaintext
@@ -818,6 +1019,11 @@ DFS 완전탐색        → 재귀
 이진탐색             → bisect / 직접 구현
 소수 판별            → 에라토스테네스의 체
 재귀 최적화          → lru_cache
+날짜 차이            → (d2 - d1).days
+요일 구하기          → date.weekday()
+n일 후 날짜          → date + timedelta(days=n)
+윤년 판별            → (y%4==0 and y%100!=0) or y%400==0
+날짜 유효성          → try: date(y,m,d) except ValueError
 ```
 
 ---
