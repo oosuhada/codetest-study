@@ -4,24 +4,83 @@
 
 # 🔥 1. 입력 / 출력
 
+## 🔥 코테 최빈출 입력 문법 해부
+
 ```python
-# 한 줄 입력 (숫자 리스트)
 arr = list(map(int, input().split()))
+```
 
-# 한 개 입력
-n = int(input())
+이 한 줄이 코테에서 가장 많이 쓰이는 입력 패턴. 안에서 바깥 순서로 읽는다.
 
-# 문자열 입력
-s = input()
+```python
+# 1단계: input().split()
+# "1 2 3 4 5" 입력 → ['1', '2', '3', '4', '5']  (문자열 리스트)
+input().split()
 
-# 여러 줄 입력
-n = int(input())
-for _ in range(n):
-    a, b = map(int, input().split())
+# 2단계: map(int, ...)
+# ['1', '2', '3'] → map 객체 (각 원소에 int 적용, 아직 리스트 아님)
+map(int, ['1', '2', '3'])
 
+# 3단계: list(...)
+# map 객체 → [1, 2, 3]  (실제 리스트로 변환)
+list(map(int, ...))
+```
+
+### 🔥 map() 핵심 패턴
+
+```python
+# map(함수, 반복가능객체) → 각 원소에 함수를 적용한 map 객체 반환
+map(int, ['1', '2', '3'])      # 정수 변환
+map(float, ['1.1', '2.2'])     # 실수 변환
+map(str, [1, 2, 3])            # 문자열 변환
+map(len, ['abc', 'de', 'f'])   # 각 원소의 길이
+
+# list()로 감싸야 실제 리스트가 됨
+list(map(int, ['1', '2']))     # [1, 2]
+tuple(map(int, ['1', '2']))    # (1, 2)
+
+# 언패킹으로 바로 변수에 받기 (두 수 입력)
+a, b = map(int, input().split())
+
+# 여러 개를 각각 다른 변수에
+n, m, k = map(int, input().split())
+```
+
+### 🔥 split() 핵심 패턴
+
+```python
+"1 2 3".split()       # ['1', '2', '3']  기본: 공백
+"1,2,3".split(',')    # ['1', '2', '3']  쉼표 기준
+"abc".split()         # ['abc']          공백 없으면 통째로
+"  1  2  ".split()    # ['1', '2']       양쪽 공백 자동 제거
+```
+
+### ❗ 자주 쓰는 입력 패턴 모음
+
+```python
+n = int(input())                              # 숫자 하나
+a, b = map(int, input().split())              # 숫자 두 개
+arr = list(map(int, input().split()))         # 숫자 여러 개 → 리스트
+s = input()                                   # 문자열 그대로
+
+# 2D 배열 입력
+graph = [list(map(int, input().split())) for _ in range(n)]
+
+# 문자열을 한 글자씩 리스트로
+row = list(input())           # "101" → ['1', '0', '1']
+row = list(map(int, input())) # "101" → [1, 0, 1]  ← 공백 없는 숫자열
+
+# n줄 입력받기
+data = [input() for _ in range(n)]
+data = [list(map(int, input().split())) for _ in range(n)]
+```
+
+## 기타 입출력 패턴
+
+```python
 # 출력
 print(n)
-print(*arr)        # 리스트 공백 출력
+print(*arr)           # 리스트 공백 출력
 print(*arr, sep=',')  # 쉼표로 출력
 
 # 🔥 빠른 입력 (입력 많을 때 필수)
@@ -34,13 +93,13 @@ input = sys.stdin.readline
 # 🔥 2. 반복문
 
 ```python
-for i in range(n):          # 0 ~ n-1
-for i in range(1, n+1):     # 1 ~ n
-for i in range(n, 0, -1):   # n ~ 1 (역순)
-for i in range(0, n, 2):    # 0, 2, 4 ... (step)
+for i in range(n):           # 0 ~ n-1
+for i in range(1, n+1):      # 1 ~ n
+for i in range(n, 0, -1):    # n ~ 1 (역순)
+for i in range(0, n, 2):     # 0, 2, 4 ... (step)
 
-for num in arr:              # 리스트 순회
-for i, v in enumerate(arr): # 인덱스 + 값
+for num in arr:               # 리스트 순회
+for i, v in enumerate(arr):  # 인덱스 + 값
 for a, b in zip(arr1, arr2): # 두 개 동시에
 
 # while
@@ -67,9 +126,9 @@ else:
 and   or   not
 
 # 핵심 패턴
-if num % n == 0:                        # 나눠떨어짐
-if num % n == 0 and num % m == 0:       # 둘 다 나눠떨어짐
-if a <= x <= b:                         # 범위 체크 (Python만 가능!)
+if num % n == 0:                       # 나눠떨어짐
+if num % n == 0 and num % m == 0:      # 둘 다 나눠떨어짐
+if a <= x <= b:                        # 범위 체크 (Python만 가능!)
 ```
 
 ## ❗ 자주 틀리는 것
@@ -186,7 +245,7 @@ for a in arr:
 str(a)
 int("10")
 float("3.14")
-list("abc")   # ['a', 'b', 'c']
+list("abc")    # ['a', 'b', 'c']
 list(range(5)) # [0, 1, 2, 3, 4]
 tuple(arr)
 set(arr)
@@ -195,8 +254,8 @@ set(arr)
 ## 🔥 핵심 패턴
 
 ```python
-int(str(a) + str(b))   # 두 숫자 이어붙이기
-[int(x) for x in list(str(n))]  # 각 자릿수를 리스트로
+int(str(a) + str(b))              # 두 숫자 이어붙이기
+[int(x) for x in list(str(n))]   # 각 자릿수를 리스트로
 ```
 
 ---
@@ -281,15 +340,15 @@ q.popleft()     # 왼쪽에서 제거
 # 🔥 10. 정렬
 
 ```python
-arr.sort()                      # 오름차순
-arr.sort(reverse=True)          # 내림차순
-arr.sort(key=len)               # 길이 기준
-arr.sort(key=lambda x: x[1])   # 두 번째 값 기준
-arr.sort(key=lambda x: (x[1], x[0]))  # 복합 기준
+arr.sort()                             # 오름차순
+arr.sort(reverse=True)                 # 내림차순
+arr.sort(key=len)                      # 길이 기준
+arr.sort(key=lambda x: x[1])          # 두 번째 값 기준
+arr.sort(key=lambda x: (x[1], x[0])) # 복합 기준
 
-sorted(arr)                     # 원본 유지, 새 리스트 반환
+sorted(arr)                            # 원본 유지, 새 리스트 반환
 sorted(arr, reverse=True)
-sorted(arr, key=lambda x: -x)  # 내림차순 (음수 트릭)
+sorted(arr, key=lambda x: -x)         # 내림차순 (음수 트릭)
 ```
 
 ---
@@ -458,114 +517,28 @@ list(product([1,2], repeat=3))   # 2^3 = 8가지
 # 🔥 18. 유용한 내장 함수
 
 ```python
-abs(-10)          # 절댓값
-round(3.14)       # 반올림
-pow(2, 10)        # 2^10 (= 2**10)
-divmod(7, 3)      # (2, 1) → 몫, 나머지
-any([False, True, False])   # 하나라도 True면 True
-all([True, True, True])     # 모두 True여야 True
+abs(-10)                         # 절댓값
+round(3.14)                      # 반올림
+pow(2, 10)                       # 2^10 (= 2**10)
+divmod(7, 3)                     # (2, 1) → 몫, 나머지
+any([False, True, False])        # 하나라도 True면 True
+all([True, True, True])          # 모두 True여야 True
 ```
 
 ---
 
-# 🔥 19. 핵심 패턴 모음
-
-## 문자열 번갈아 합치기
-
-```python
-result = []
-for a, b in zip(str1, str2):
-    result.append(a)
-    result.append(b)
-return ''.join(result)
-```
-
-## 숫자를 자릿수 리스트로
-
-```python
-digits = [int(d) for d in str(n)]
-```
-
-## 최댓값 인덱스
-
-```python
-idx = arr.index(max(arr))
-```
-
-## 리스트 초기화
-
-```python
-[0] * 5           # [0, 0, 0, 0, 0]
-[[0]*m for _ in range(n)]   # 2D
-```
-
-## 딕셔너리 카운트
-
-```python
-d = {}
-for x in arr:
-    d[x] = d.get(x, 0) + 1
-```
-
-## unpacking
-
-```python
-a, b = 1, 2
-a, b = b, a      # 🔥 스왑
-a, b = [1, 2]
-a, *rest = [1, 2, 3, 4]   # a=1, rest=[2,3,4]
-```
-
----
-
-# 🔥 20. 실수 체크리스트
-
-```plaintext
-1. : 붙였는가?
-2. == 썼는가? (= 아니라)
-3. True/False 대문자인가?
-4. 인덱스 범위 초과 안 했는가?
-5. join 대신 += 안 썼는가?
-6. IndexError 가능성 체크
-7. 문자열 + 숫자 ❌ (str() 변환)
-8. join 안에 숫자 ❌ (str 변환 후)
-9. 2D 배열 [[0]*m]*n ❌ (같은 행 공유!)
-10. sort()는 원본 변경, sorted()는 새 리스트
-11. deque 대신 list.pop(0) 쓰면 느림
-12. 재귀 깊이 기본 1000 → setrecursionlimit 필요 시
-```
-
----
-
-# 🚀 핵심 무기 요약
-
-| 상황 | 사용 |
-|---|---|
-| 문자열 합치기 | `join` |
-| 두 리스트 동시 | `zip` |
-| 인덱스 필요 | `enumerate` |
-| 정렬 | `sort` / `sorted` |
-| 카운트 | `Counter` |
-| 중복 제거 | `set` |
-| BFS | `deque` |
-| 최솟값/최댓값 빠르게 | `heapq` |
-| 완전탐색 | 순열/조합 `itertools` |
-| 이진탐색 | `bisect` |
-
----
-
-# 🔥 21. 난수 (random)
+# 🔥 19. 난수 (random)
 
 ```python
 import random
 
-random.random()              # 0.0 이상 1.0 미만 float 난수
-random.randint(1, 10)        # 1 이상 10 이하 int 난수 (양 끝 포함!)
-random.randrange(0, 10)      # 0 이상 10 미만 int 난수 (range처럼)
-random.choice([1, 2, 3])     # 리스트에서 랜덤 요소 1개 선택
-random.choices([1,2,3], k=2) # 중복 허용, k개 선택
-random.sample([1,2,3,4], 2)  # 중복 없이 k개 선택
-random.shuffle(arr)          # 리스트 제자리에서 섞기 (반환값 없음!)
+random.random()               # 0.0 이상 1.0 미만 float 난수
+random.randint(1, 10)         # 1 이상 10 이하 int 난수 (양 끝 포함!)
+random.randrange(0, 10)       # 0 이상 10 미만 int 난수 (range처럼)
+random.choice([1, 2, 3])      # 리스트에서 랜덤 요소 1개 선택
+random.choices([1,2,3], k=2)  # 중복 허용, k개 선택
+random.sample([1,2,3,4], 2)   # 중복 없이 k개 선택
+random.shuffle(arr)           # 리스트 제자리에서 섞기 (반환값 없음!)
 ```
 
 ## ❗ 자주 틀리는 것
@@ -580,7 +553,7 @@ random.randrange(1, 10)     # ⚠️ 10 미포함 (range와 동일)
 
 ---
 
-# 🔥 22. 날짜와 시간 (datetime)
+# 🔥 20. 날짜와 시간 (datetime)
 
 ```python
 from datetime import datetime, date, timedelta
@@ -604,7 +577,6 @@ d = date(2024, 1, 1)
 dt = datetime(2024, 1, 1, 9, 30, 0)
 
 # 날짜 연산 (timedelta)
-from datetime import timedelta
 d + timedelta(days=7)        # 7일 후
 d - timedelta(weeks=1)       # 1주 전
 dt + timedelta(hours=3)      # 3시간 후
@@ -619,7 +591,7 @@ d1 < d2
 d1 == d2
 
 # 포맷
-now.strftime("%Y-%m-%d %H:%M:%S")     # datetime → 문자열
+now.strftime("%Y-%m-%d %H:%M:%S")            # datetime → 문자열
 datetime.strptime("2024-01-01", "%Y-%m-%d")  # 문자열 → datetime
 ```
 
@@ -647,6 +619,77 @@ int(diff)          # ❌ 에러!
 # weekday vs isoweekday
 now.weekday()      # 월=0, 일=6
 now.isoweekday()   # 월=1, 일=7  ← 헷갈리면 이거 써라
+```
+
+---
+
+# 🔥 21. 핵심 패턴 모음
+
+## 문자열 번갈아 합치기
+
+```python
+result = []
+for a, b in zip(str1, str2):
+    result.append(a)
+    result.append(b)
+return ''.join(result)
+```
+
+## 숫자를 자릿수 리스트로
+
+```python
+digits = [int(d) for d in str(n)]
+```
+
+## 최댓값 인덱스
+
+```python
+idx = arr.index(max(arr))
+```
+
+## 리스트 초기화
+
+```python
+[0] * 5                      # [0, 0, 0, 0, 0]
+[[0]*m for _ in range(n)]    # 2D
+```
+
+## 딕셔너리 카운트
+
+```python
+d = {}
+for x in arr:
+    d[x] = d.get(x, 0) + 1
+```
+
+## unpacking
+
+```python
+a, b = 1, 2
+a, b = b, a                  # 🔥 스왑
+a, b = [1, 2]
+a, *rest = [1, 2, 3, 4]      # a=1, rest=[2,3,4]
+```
+
+---
+
+# 🔥 22. 실수 체크리스트
+
+```plaintext
+1.  : 붙였는가?
+2.  == 썼는가? (= 아니라)
+3.  True/False 대문자인가?
+4.  인덱스 범위 초과 안 했는가?
+5.  join 대신 += 안 썼는가?
+6.  IndexError 가능성 체크
+7.  문자열 + 숫자 ❌ (str() 변환)
+8.  join 안에 숫자 ❌ (str 변환 후)
+9.  2D 배열 [[0]*m]*n ❌ (같은 행 공유!)
+10. sort()는 원본 변경, sorted()는 새 리스트
+11. deque 대신 list.pop(0) 쓰면 느림
+12. 재귀 깊이 기본 1000 → setrecursionlimit 필요 시
+13. random.shuffle() 반환값 없음 → 원본 직접 수정됨
+14. timedelta 차이는 .days로 꺼내야 숫자로 사용 가능
 ```
 
 ---
