@@ -1,0 +1,9 @@
+def solution(babbling):
+    for babble in babbling:
+        babble.replace("aya","")
+        babble.replace("ye","")
+        babble.replace("woo","")
+        babble.replace("ma","")
+        return babbling
+    answer = 0
+    
