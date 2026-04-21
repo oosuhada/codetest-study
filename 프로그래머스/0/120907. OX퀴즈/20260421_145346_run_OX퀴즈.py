@@ -1,0 +1,83 @@
+#난이도 중. 힌트도 참고함. append() 대신 [] 사용한게 가장 큰 실수이고 알아차리지 못했음.
+
+def solution(quiz):
+    answer = []
+    quiz_split = []
+    
+    for c in quiz:
+        quiz_split.append(str(c).split())
+
+    for d in quiz_split:
+        if d[1] == '+':
+            if int(d[0]) + int(d[2]) == int(d[4]):
+                answer.append("O")
+            else: 
+                answer.append("X")
+        elif d[1] == '-':
+            if int(d[0]) - int(d[2]) == int(d[4]):
+                answer.append("O")
+            else: 
+                answer.append("X")
+                
+    return answer
+
+
+#["3 - 4 = -3", "5 + 6 = 11"] 
+#["19 - 6 = 13", "5 + 66 = 71", "5 - 15 = 63", "3 - 1 = 2"]
+#각 인덱스마다 길이도 다르고 연산자도 다른데 어떻게 분리하지? 라는 고민
+#쪼갤 수 있는 구조인지 먼저 확인 split(" ") gpt 통해서 힌트 얻음
+
+#quiz_split = str(quiz).split(" ")
+#["['3","-","4","=","-3',","'5","+","6","=","11']"]
+#["['19","-","6","=","13',","'5","+","66","=","71',","'5","-","15","=","63',","'3","-","1","=","2']"]
+
+#     answer = []
+#     quiz_split = []
+#     for c in quiz:
+#         quiz_split.append(str(c).split())
+
+#     return quiz_split
+
+
+# IndexError: list index out of range
+# def solution(quiz):
+#     answer = []
+#     quiz_split = []
+#     for c in quiz:
+#         quiz_split.append(str(c).split())
+
+#     for d in quiz_split:
+#         if d[1] == '+':
+#             if int(d[0]) + int(d[2]) == int(d[5]):
+#                 answer.append["O"]
+#             else: 
+#                 answer.append["X"]
+#         elif d[1] == '-':
+#             if int(d[0]) - int(d[2]) == int(d[5]):
+#                 answer.append["O"]
+#             else: 
+#                 answer.append["X"]
+                
+#     return answer
+
+# TypeError: 'builtin_function_or_method' object is not subscriptable
+# def solution(quiz):
+#     answer = []
+#     quiz_split = []
+    
+#     for c in quiz:
+#         quiz_split.append(str(c).split())
+
+#     for d in quiz_split:
+#         if d[1] == '+':
+#             if int(d[0]) + int(d[2]) == int(d[4]):
+#                 answer.append["O"]
+#             else: 
+#                 answer.append["X"]
+#         elif d[1] == '-':
+#             if int(d[0]) - int(d[2]) == int(d[4]):
+#                 answer.append["O"]
+#             else: 
+#                 answer.append["X"]
+                
+#     return answer
