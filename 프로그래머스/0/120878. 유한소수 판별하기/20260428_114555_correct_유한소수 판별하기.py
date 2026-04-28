@@ -1,0 +1,63 @@
+def solution(a, b):
+    new_a = a
+    new_b = b
+    d = 2
+    array = []
+    
+    for c in range(1,b+1):
+        if new_a % c == 0 and new_b % c == 0:
+            new_a = new_a / c
+            new_b = new_b / c
+        
+    while new_b % 2 == 0:
+        new_b = new_b // 2
+    
+    while new_b % 5 == 0:
+        new_b = new_b // 5
+    
+    if new_b == 1:
+        return 1
+    else:
+        return 2
+
+
+
+#최대 공약수 구하는 공식이 있을것 같다
+
+# ZeroDivisionError: integer division or modulo by zero
+# def solution(a, b):
+#     new_a = 0
+#     new_b = 0
+#     d = 2
+#     array = []
+#     for c in range(b):
+#         if a // c == 0 and b // c == 0 and c >1:
+#             new_a = (a // c)
+#             new_b = (b // c)
+
+#         while d < new_b:
+#             if new_b // d == 0:
+#                 array.append(d)
+#     answer = 0
+#     return array.append
+
+# TypeError: Object of type builtin_function_or_method is not JSON serializable
+# def solution(a, b):
+#     new_a = 0
+#     new_b = 0
+#     d = 2
+#     array = []
+    
+#     for c in range(2,b+1):
+#         if a // c == 0 and b // c == 0 and c >1:
+#             new_a = (a // c)
+#             new_b = (b // c)
+
+#         while d < new_b:
+#             if new_b // d == 0:
+#                 array.append(d)
+#     answer = 0
+#     return array.append
+
+# 기약분수로 만들기 방법 
+# 분모에서 2와 5 제거 while문 기억해야함
